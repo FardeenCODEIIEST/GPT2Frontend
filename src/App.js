@@ -1,25 +1,42 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
 
-function App() {
+import ChatList from "./components/ChatList";
+import Hero from "./components/Hero";
+
+let CHATS;
+
+if (localStorage.getItem("chats") === null) {
+  CHATS = [];
+} else {
+  CHATS = JSON.parse(localStorage.getItem("chats"));
+}
+
+const App = () => {
+  const [chats, setChats] = useState(CHATS);
+
+  const pushChats = (chat) => {
+    chats.push(chat);
+    const newChats = chats.slice();
+    setChats(newChats);
+    let arrayString = JSON.stringify(newChats);
+    localStorage.setItem("chats", arrayString);
+  };
+
+  const clearChat = (chat) => {
+    const index = chats.indexOf(chat);
+    const newChats = chats.slice();
+    newChats.splice(index, 1);
+    setChats(newChats);
+    let arrayString = JSON.stringify(newChats);
+    localStorage.setItem("chats", arrayString);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="flex h-screen w-screen">
+      <ChatList chats={chats} clearChat={clearChat} />
+      <Hero chats={chats} setChats={pushChats} />
     </div>
   );
-}
+};
 
 export default App;
