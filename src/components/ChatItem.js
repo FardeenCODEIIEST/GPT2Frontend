@@ -28,7 +28,7 @@ const ChatItem = (props) => {
         centered
         show={click}
       >
-        <Modal.Header closeButton>
+        <Modal.Header>
           <Modal.Title id="contained-modal-title-vcenter">
             Model Response
           </Modal.Title>
