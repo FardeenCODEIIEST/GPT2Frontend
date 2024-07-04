@@ -4,6 +4,13 @@ import ContentCard from "./ContentCard";
 import LoadingSpinner from "./LoadingSpinner";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
+import client from "./gradio-client";
+
+const type_to_num = {
+  short: 250,
+  medium: 500,
+  long: 1000,
+};
 
 const GENERIC_CONTENT = [
   "All are equal ...",
@@ -46,28 +53,16 @@ const Hero = (props) => {
     if (!prompt || prompt.length === 0) {
       alert("PLEASE ENTER SOME NON-EMPTY PROMPT!!");
     }
-    // console.log({
-    //   prompt,
-    //   type,
-    // });
     try {
       setIsLoading(true);
-      const response = await fetch("http://127.0.0.1:9000/", {
-        method: "POST",
-        body: JSON.stringify({ prompt: prompt, type: type }),
-        headers: {
-          "Content-Type": "application/json",
-        },
+      const result = await client.predict("/chat", {
+        message: prompt,
+        min_length: 50,
+        max_length: type_to_num[type],
       });
-      if (response.ok) {
-        const responseData = await response.json();
-        setIsLoading(false);
-        // console.log(responseData.generated_text);
-        setResponseText(responseData.generated_text);
-        setShowResponse(true);
-      } else {
-        throw new Error("Server issue");
-      }
+      setIsLoading(false);
+      setResponseText(result.data);
+      setShowResponse(true);
     } catch (err) {
       console.log(err);
     }
@@ -97,7 +92,7 @@ const Hero = (props) => {
       </Modal>
 
       <div className="h-full w-5/6 bg-gray-50 flex-col">
-        <div className="w-full mt-24 mb-28 flex gap-3 justify-center">
+        <div className="w-full mt-24 mb-24 flex gap-3 justify-center">
           <h1 className="text-slate-400 font-semibold text-2xl text-center">
             President GPT
           </h1>
@@ -121,6 +116,9 @@ const Hero = (props) => {
             </svg>
           </div>
         </div>
+        <h3 className="text-slate-300 text-center mb-4 text-md font-mono">
+          Sample Prompts
+        </h3>
         <div className="flex gap-20 w-full justify-center">
           {GENERIC_CONTENT.map((idea) => {
             return <ContentCard content={idea} />;
@@ -141,7 +139,7 @@ const Hero = (props) => {
               <select
                 name="Types"
                 id="type"
-                className="font-mono text-center rounded-3xl bg-slate-400 hover:shadow:xl"
+                className="font-mono text-center rounded-3xl bg-slate-300 hover:shadow:xl"
                 value={type}
                 onChange={handleType}
               >
@@ -159,6 +157,13 @@ const Hero = (props) => {
             </div>
           </form>
         </div>
+        {/* <iframe
+          title="chatbot"
+          src="https://adarksky-summer24-fine-tuning.hf.space"
+          frameborder="0"
+          width="850"
+          height="450"
+        ></iframe> */}
       </div>
     </>
   );
