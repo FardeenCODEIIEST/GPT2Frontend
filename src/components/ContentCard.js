@@ -3,7 +3,7 @@ import React from "react";
 const ContentCard = (props) => {
   return (
     <>
-      <div className="flex-col w-44 h-28 rounded-md overflow-hidden shadow-md p-3 bg-slate-200 cursor-pointer hover:shadow-lg hover:bg-slate-300">
+      <div className="flex-col lg:w-44 lg:h-28 w-34 h-28 rounded-md overflow-hidden shadow-md p-3 bg-slate-200 cursor-pointer hover:shadow-lg hover:bg-slate-300">
         <div className="mb-1">
           <img
             height={22}

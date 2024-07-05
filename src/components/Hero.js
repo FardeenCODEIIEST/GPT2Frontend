@@ -34,7 +34,10 @@ const Hero = (props) => {
     setType(e.target.value);
   };
 
-  const closeResponse = () => setShowResponse(false);
+  const closeResponse = () => {
+    setShowResponse(false);
+    // setPrompt(" Type your starting sequence here");
+  };
 
   const saveResponse = () => {
     setShowResponse(false);
@@ -45,6 +48,7 @@ const Hero = (props) => {
       response: responseText,
     };
     props.setChats(data);
+    // setPrompt(" Type your starting sequence here");
   };
 
   const submitHandler = async (event) => {
@@ -77,7 +81,7 @@ const Hero = (props) => {
         centered
         show={showResponse}
       >
-        <Modal.Header closeButton>
+        <Modal.Header>
           <Modal.Title id="contained-modal-title-vcenter">
             Model Response
           </Modal.Title>
@@ -91,8 +95,8 @@ const Hero = (props) => {
         </Modal.Footer>
       </Modal>
 
-      <div className="h-full w-5/6 bg-gray-50 flex-col">
-        <div className="w-full mt-24 mb-24 flex gap-3 justify-center">
+      <div className="lg:h-full lg:w-5/6 lg: bg-gray-50 lg:flex-col h-full w-full ">
+        <div className="w-full mt-4 mb-24 flex gap-3 justify-center">
           <h1 className="text-slate-400 font-semibold text-2xl text-center">
             President GPT
           </h1>
@@ -119,19 +123,19 @@ const Hero = (props) => {
         <h3 className="text-slate-300 text-center mb-4 text-md font-mono">
           Sample Prompts
         </h3>
-        <div className="flex gap-20 w-full justify-center">
+        <div className="lg:flex lg:mt-20 lg:!gap-10 lg:justify-center grid grid-rows-2 grid-cols-2 gap-x-2 gap-y-4 ml-2">
           {GENERIC_CONTENT.map((idea) => {
             return <ContentCard content={idea} />;
           })}
         </div>
-        <div className="mt-64 ml-40 ">
+        <div className="lg:mt-64 lg:ml-40 mt-52 ml-2">
           <form>
-            <div className="flex gap-8">
+            <div className="flex lg:gap-8 gap-4">
               <textarea
                 id="prompt"
                 rows=""
                 cols="60"
-                className="resize-none rounded-lg bg-slate-200 active:bg-slate-300 h-10 p-1 text-xl font-mono shadow-md hover:shadow-none"
+                className="resize-none rounded-lg bg-slate-200 active:bg-slate-300 lg:h-10 lg:p-1 lg:text-xl font-mono shadow-md hover:shadow-none text-base"
                 placeholder=" Type your starting sequence here"
                 value={prompt}
                 onChange={handlePrompt}

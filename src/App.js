@@ -13,6 +13,11 @@ if (localStorage.getItem("chats") === null) {
 
 const App = () => {
   const [chats, setChats] = useState(CHATS);
+  const [navTouch, setNavTouch] = useState(0);
+
+  const navHandler = () => {
+    setNavTouch((navTouch + 1) % 2);
+  };
 
   const pushChats = (chat) => {
     chats.push(chat);
@@ -32,9 +37,14 @@ const App = () => {
   };
 
   return (
-    <div className="flex h-screen w-screen">
-      <ChatList chats={chats} clearChat={clearChat} />
-      <Hero chats={chats} setChats={pushChats} />
+    <div className="lg:flex h-screen w-screen ">
+      <ChatList
+        chats={chats}
+        clearChat={clearChat}
+        navHandler={navHandler}
+        navTouch={navTouch}
+      />
+      {navTouch === 0 && <Hero chats={chats} setChats={pushChats} />}
     </div>
   );
 };
